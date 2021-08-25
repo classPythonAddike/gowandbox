@@ -3,6 +3,9 @@ package gowandbox
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -34,20 +37,20 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 	}
 
 	resp, err := client.Post(
-		WandBoxUrl+"compile.json",
+		wandBoxUrl+"compile.json",
 		"application/json",
 		bytes.NewBuffer(data),
 	)
+
+	if resp.StatusCode != http.StatusOK {
+		e, _ := ioutil.ReadAll(resp.Body)
+		return result, errors.New(fmt.Sprintf("%v Error - %v", resp.StatusCode, string(e)))
+	}
 
 	if err != nil {
 		return result, err
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
-
-	if err != nil {
-		return result, err
-	}
-
-	return result, nil
+	return result, err
 }
