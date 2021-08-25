@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -42,13 +41,13 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 		bytes.NewBuffer(data),
 	)
 
-	if resp.StatusCode != http.StatusOK {
-		e, _ := ioutil.ReadAll(resp.Body)
-		return result, errors.New(fmt.Sprintf("%v Error - %v", resp.StatusCode, string(e)))
-	}
-
 	if err != nil {
 		return result, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		e, _ := ioutil.ReadAll(resp.Body)
+		return result, errors.New(string(e))
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)

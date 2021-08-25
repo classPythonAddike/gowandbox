@@ -1,15 +1,38 @@
 package gowandbox
 
 import (
+	"strings"
 	"testing"
 )
 
 func TestTemplate(t *testing.T) {
-	templ, err := GetTemplate("cpython", 10000)
+	_, err := GetTemplate("cpython", 10000)
 
 	if err != nil {
-		t.Error(err)
+		t.Error(err.Error())
+	}
+}
+
+func TestBadTemplateError(t *testing.T) {
+	_, err := GetTemplate("abc", 10000)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
 	}
 
-	t.Logf("Got template for cpython - %v", templ)
+	if !strings.Contains(err.Error(), "bad template_name") {
+		t.Error(err.Error())
+	}
+}
+
+func TestTemplateTimeoutError(t *testing.T) {
+	_, err := GetTemplate("", 1)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
+	}
+
+	if !strings.Contains(err.Error(), "context deadline exceeded") {
+		t.Error(err.Error())
+	}
 }

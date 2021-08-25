@@ -2,6 +2,7 @@ package gowandbox
 
 import (
 	"log"
+	"strings"
 	"testing"
 )
 
@@ -11,7 +12,7 @@ func assert(expected, got string, t *testing.T) {
 	}
 }
 
-func TestMain(t *testing.T) {
+func TestExecution(t *testing.T) {
 
 	prog := NewGWBProgram()
 
@@ -29,7 +30,7 @@ func TestMain(t *testing.T) {
 	result, err := prog.Execute(10000)
 
 	if err != nil {
-		t.Error(err)
+		t.Error(err.Error())
 	}
 
 	assert("123\n", result.ProgramOutput, t)
@@ -40,4 +41,56 @@ func TestMain(t *testing.T) {
 	assert("", result.CompilerError, t)
 	assert("", result.ProgramError, t)
 	assert("", result.CompilerOutput, t)
+}
+
+func TestExecutionTimeout(t *testing.T) {
+
+	prog := NewGWBProgram()
+
+	prog.Code = "import gwbutil\n\ngwbutil.say()"
+	prog.Codes = []Program{
+		{
+			"gwbutil.py",
+			"def say(): print(input())",
+		},
+	}
+	prog.Options = "warning"
+	prog.Compiler = "cpython-3.8.0"
+	prog.Stdin = "123"
+
+	_, err := prog.Execute(1)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
+	}
+
+	if !strings.Contains(err.Error(), "context deadline exceeded") {
+		t.Error(err.Error())
+	}
+}
+
+func TestExecutionBadCompiler(t *testing.T) {
+
+	prog := NewGWBProgram()
+
+	prog.Code = "import gwbutil\n\ngwbutil.say()"
+	prog.Codes = []Program{
+		{
+			"gwbutil.py",
+			"def say(): print(input())",
+		},
+	}
+	prog.Options = "warning"
+	prog.Compiler = "abc"
+	prog.Stdin = "123"
+
+	_, err := prog.Execute(10000)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
+	}
+
+	if !strings.Contains(err.Error(), "Internal Server Error") {
+		t.Error(err.Error())
+	}
 }
