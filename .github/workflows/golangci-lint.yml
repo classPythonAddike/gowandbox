@@ -3,7 +3,7 @@ on: [push]
 jobs:
 
   build:
-    name: Ling
+    name: Lint
     runs-on: ubuntu-latest
     steps:
 
