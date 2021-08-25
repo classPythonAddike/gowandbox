@@ -17,7 +17,7 @@ func TestMain(t *testing.T) {
 
 	prog.Code = "import gwbutil\n\ngwbutil.say()"
 	prog.Codes = []Program{
-		Program{
+		{
 			"gwbutil.py",
 			"def say(): print(input())",
 		},
