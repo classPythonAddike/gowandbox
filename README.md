@@ -1,4 +1,4 @@
-<h1>GoWandBox</h1>
+<h1 align="center">GoWandBox</h1>
 
 <div align="center">
   <img src="https://img.shields.io/github/languages/top/classPythonAddike/gowandbox">
