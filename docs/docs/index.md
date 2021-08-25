@@ -2,16 +2,42 @@
 
 For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 
-## Commands
+## Installation
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+* `go get github.com/classPythonAddike/gowandbox`
 
-## Project layout
+## Basic Usage
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+```golang
+
+package main
+
+import (
+	"fmt"
+	gwb "github.com/classPythonAddike/gowandbox"
+)
+
+function main() {
+	
+	prog := GWBProgram{
+		Code:     "print(input())",
+		Options:  "warning",
+		Compiler: "cpython-3.8.0",
+		Stdin:    "123",
+
+		CompilerOptionRaw: "",
+		RuntimeOptionRaw:  "",
+		Codes:             []Program{},
+		SaveCode:          false,
+	}
+
+	result, err := prog.Execute(10000) // Timeout is 10,000 milliseconds
+
+	if err != nil {
+		fmt.Fatal(err)
+	}
+
+	fmt.Sprintf("Output: %v\n", result.CompilerOutput)
+}
+
+```
