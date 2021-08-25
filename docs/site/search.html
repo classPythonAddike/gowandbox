@@ -5,26 +5,19 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="None">
   
-  <link rel="canonical" href="https://classpythonaddike.github.io/gowandbox/">
-  <link rel="shortcut icon" href="img/favicon.ico">
+  
+  
+  <link rel="shortcut icon" href="./img/favicon.ico">
   <title>GoWandBox</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
 
-  <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/theme_extra.css" />
+  <link rel="stylesheet" href="./css/theme.css" />
+  <link rel="stylesheet" href="./css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
   
-  <script>
-    // Current page data
-    var mkdocs_page_name = "Welcome to MkDocs";
-    var mkdocs_page_input_path = "index.md";
-    var mkdocs_page_url = "/gowandbox/";
-  </script>
-  
-  <script src="js/jquery-2.1.1.min.js" defer></script>
-  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="./js/jquery-2.1.1.min.js" defer></script>
+  <script src="./js/modernizr-2.8.3.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
 </head>
@@ -37,7 +30,7 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-        <a href="." class="icon icon-home"> GoWandBox</a>
+        <a href="./." class="icon icon-home"> GoWandBox</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
@@ -46,14 +39,8 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-                <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Welcome to MkDocs</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a>
-    </li>
-    </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="./.">Welcome to MkDocs</a>
                     </li>
                 </ul>
       </div>
@@ -65,7 +52,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href=".">GoWandBox</a>
+        <a href="./.">GoWandBox</a>
       </nav>
 
       
@@ -73,11 +60,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".">Docs</a> &raquo;</li>
+    <li><a href="./.">Docs</a> &raquo;</li>
     
-      
     
-    <li>Welcome to MkDocs</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -89,46 +74,19 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="installation">Installation</h2>
-<ul>
-<li><code>go get github.com/classPythonAddike/gowandbox</code></li>
-</ul>
-<h2 id="basic-usage">Basic Usage</h2>
-<pre><code class="language-golang">
-package main
 
-import (
-    &quot;fmt&quot;
-    gwb &quot;github.com/classPythonAddike/gowandbox&quot;
-)
+  <h1 id="search">Search Results</h1>
 
-function main() {
+  <form id="content_search" action="search.html">
+    <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+    <input name="q" id="mkdocs-search-query" type="text" class="search_input search-query ui-autocomplete-input" placeholder="Search the Docs" autocomplete="off" autofocus title="Type search term here">
+  </form>
 
-    prog := GWBProgram{
-        Code:     &quot;print(input())&quot;,
-        Options:  &quot;warning&quot;,
-        Compiler: &quot;cpython-3.8.0&quot;,
-        Stdin:    &quot;123&quot;,
+  <div id="mkdocs-search-results" class="search-results" data-no-results-text="No results found">
+    Searching...
+  </div>
 
-        CompilerOptionRaw: &quot;&quot;,
-        RuntimeOptionRaw:  &quot;&quot;,
-        Codes:             []Program{},
-        SaveCode:          false,
-    }
 
-    result, err := prog.Execute(10000) // Timeout is 10,000 milliseconds
-
-    if err != nil {
-        fmt.Fatal(err)
-    }
-
-    fmt.Sprintf(&quot;Output: %v\n&quot;, result.CompilerOutput)
-}
-
-</code></pre>
-              
             </div>
           </div>
           <footer>
@@ -159,9 +117,9 @@ function main() {
   </span>
 </div>
     <script>var base_url = '.';</script>
-    <script src="js/theme_extra.js" defer></script>
-    <script src="js/theme.js" defer></script>
-      <script src="search/main.js" defer></script>
+    <script src="./js/theme_extra.js" defer></script>
+    <script src="./js/theme.js" defer></script>
+      <script src="./search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
@@ -170,8 +128,3 @@ function main() {
 
 </body>
 </html>
-
-<!--
-MkDocs version : 1.2.2
-Build Date UTC : 2021-08-25 04:35:32.896942+00:00
--->
