@@ -10,4 +10,6 @@
   <img src="https://img.shields.io/github/license/classPythonAddike/gowandbox">
 </div>
 
+<br>
+
 A simple wrapper for the WandBox API, written in Golang!
