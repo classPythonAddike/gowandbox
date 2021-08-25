@@ -43,7 +43,11 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 		return result, err
 	}
 
-	json.NewDecoder(resp.Body).Decode(&result)
+	err = json.NewDecoder(resp.Body).Decode(&result)
+
+	if err != nil {
+		return result, err
+	}
 
 	return result, nil
 }
