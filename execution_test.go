@@ -16,7 +16,7 @@ func TestExecution(t *testing.T) {
 
 	prog := NewGWBProgram()
 
-	prog.Code = "import gwbutil\n\ngwbutil.say()"
+	prog.Code = "import gwbutil\n\ngwbutil.say()\ngwbutil.say()"
 	prog.Codes = []Program{
 		{
 			"gwbutil.py",
@@ -25,7 +25,7 @@ func TestExecution(t *testing.T) {
 	}
 	prog.Options = "warning"
 	prog.Compiler = "cpython-3.8.0"
-	prog.Stdin = "123"
+	prog.Stdin = "123\n456"
 
 	result, err := prog.Execute(10000)
 
@@ -33,7 +33,7 @@ func TestExecution(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	assert("123\n", result.ProgramOutput, t)
+	assert("123\n456\n", result.ProgramOutput, t)
 
 	log.Printf("Got output - %v", result.ProgramOutput)
 	log.Println("Comparing errors, compiler output")

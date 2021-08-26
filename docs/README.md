@@ -28,26 +28,39 @@ import (
     gwb "github.com/classPythonAddike/gowandbox"
 )
 
-function main() {
+func main() {
 
-    prog := GWBProgram{
-        Code:     "print(input())",
-        Options:  "warning",
-        Compiler: "cpython-3.8.0",
-        Stdin:    "123",
+	prog := NewGWBProgram()
 
-        CompilerOptionRaw: "",
-        RuntimeOptionRaw:  "",
-        Codes:             []Program{},
-        SaveCode:          false,
-    }
+	prog.Code = "import gwbutil\n\ngwbutil.say()\ngwbutil.say()" // Code for the main program
 
-    result, err := prog.Execute(10000) // Timeout is 10,000 milliseconds
+	// Other files to create
+	prog.Codes = []Program{
+		{
+			"gwbutil.py",
+			"def say():\nprint(input())",
+		},
+	}
+
+	prog.Options = "warning" // Show warnings
+	prog.Compiler = "cpython-3.8.0" // Use cpython, 3.8 to run your code
+	prog.Stdin = "123\n456" // Specify input for the program
+
+	result, err := prog.Execute(10000) // 10000 milliseconds is the timeout
 
     if err != nil {
         fmt.Fatal(err)
     }
 
-    fmt.Sprintf("Output: %v\n", result.CompilerOutput)
+    fmt.Sprintf("Output: %v\n", result.ProgramOutput)
+	/*
+		Use result.CompilerOutput for output during compile time
+		Use result.CompilerError for errors during compile time
+		Use result.CompilerMessage for both put together
+
+		Use result.ProgramOutput for output during runtime
+		Use result.ProgramError for errors during runtime
+		Use result.ProgramMessage for both put together
+	*/
 }
 ```
