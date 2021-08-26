@@ -1,6 +1,17 @@
 package gowandbox
 
-var wandBoxUrl string = "https://wandbox.org/api/"
+import "bufio"
+
+var defaultUrl string = "https://wandbox.org/api/"
+var wandBoxUrl string = defaultUrl
+
+func ChangeWandBoxUrl(url string) {
+	wandBoxUrl = url
+}
+
+func ResetWandBoxUrl() {
+	wandBoxUrl = defaultUrl
+}
 
 type Program struct {
 	File string `json:"file"`
@@ -22,6 +33,19 @@ type GWBProgram struct {
 	SaveCode bool `json:"save"`
 }
 
+type GWBNDProgram struct {
+	Compiler string `json:"compiler"`
+
+	Code  string    `json:"code"`
+	Codes []Program `json:"codes"`
+
+	Options           string `json:"options"`
+	CompilerOptionRaw string `json:"compiler-option-raw"`
+	RuntimeOptionRaw  string `json:"runtime-option-raw"`
+
+	Stdin string `json:"stdin"`
+}
+
 type GWBResult struct {
 	Status string `json:"status"`
 	Signal string `json:"signal"`
@@ -36,6 +60,15 @@ type GWBResult struct {
 
 	Permlink string `json:"permlink"`
 	Url      string `json:"url"`
+}
+
+type GWBNDReader struct {
+	source *bufio.Scanner
+}
+
+type GWBNDMessage struct {
+	Data string `json:"data"`
+	Type string `json:"type"`
 }
 
 type GWBLanguage struct {

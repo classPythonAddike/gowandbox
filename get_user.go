@@ -24,10 +24,12 @@ func GetUser(sessionKey string, timeout int) (GWBUser, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
+		defer resp.Body.Close()
 		e, _ := ioutil.ReadAll(resp.Body)
 		return result, errors.New(string(e))
 	}
 
+	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	return result, err
 }

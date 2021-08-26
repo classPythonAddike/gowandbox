@@ -14,6 +14,8 @@ func TestUserNotFoundError(t *testing.T) {
 	if user.Username != "" {
 		t.Errorf("Got username - %v", user.Username)
 	}
+
+	t.Log("User was not found, as expected")
 }
 
 func TestUserTimeoutError(t *testing.T) {
@@ -26,4 +28,6 @@ func TestUserTimeoutError(t *testing.T) {
 	if !strings.Contains(err.Error(), "context deadline exceeded") {
 		t.Error(err.Error())
 	}
+
+	t.Log("Request timed out as expected")
 }

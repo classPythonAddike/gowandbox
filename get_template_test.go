@@ -11,6 +11,8 @@ func TestTemplate(t *testing.T) {
 	if err != nil {
 		t.Error(err.Error())
 	}
+
+	t.Log("Got template for cpython")
 }
 
 func TestBadTemplateError(t *testing.T) {
@@ -23,6 +25,8 @@ func TestBadTemplateError(t *testing.T) {
 	if !strings.Contains(err.Error(), "bad template_name") {
 		t.Error(err.Error())
 	}
+
+	t.Log("Template for `abc` was not found, as expected")
 }
 
 func TestTemplateTimeoutError(t *testing.T) {
@@ -35,4 +39,6 @@ func TestTemplateTimeoutError(t *testing.T) {
 	if !strings.Contains(err.Error(), "context deadline exceeded") {
 		t.Error(err.Error())
 	}
+
+	t.Log("Request timed out as expected")
 }

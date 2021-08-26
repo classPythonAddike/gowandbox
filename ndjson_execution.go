@@ -1,16 +1,18 @@
 package gowandbox
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"time"
 )
 
-func NewGWBProgram() GWBProgram {
-	return GWBProgram{
+func NewGWBNDProgram() GWBNDProgram {
+	return GWBNDProgram{
 		Compiler:          "",
 		Code:              "",
 		Codes:             []Program{},
@@ -18,14 +20,30 @@ func NewGWBProgram() GWBProgram {
 		CompilerOptionRaw: "",
 		RuntimeOptionRaw:  "",
 		Stdin:             "",
-		SaveCode:          false,
 	}
 }
 
-func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
+func (r *GWBNDReader) Next() (GWBNDMessage, error) {
+	if !r.source.Scan() {
+		return GWBNDMessage{}, io.EOF
+	}
+
+	data := []byte(r.source.Text())
+
+	if err := r.source.Err(); err != nil {
+		return GWBNDMessage{}, err
+	}
+
+	result := GWBNDMessage{}
+	err := json.Unmarshal(data, &result)
+
+	return result, err
+}
+
+func (g *GWBNDProgram) Execute(timeout int) (GWBNDReader, error) {
 
 	data, err := json.Marshal(g)
-	var result GWBResult
+	var result GWBNDReader
 
 	if err != nil {
 		return result, err
@@ -36,7 +54,7 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 	}
 
 	resp, err := client.Post(
-		wandBoxUrl+"compile.json",
+		wandBoxUrl+"compile.ndjson",
 		"application/json",
 		bytes.NewBuffer(data),
 	)
@@ -46,12 +64,10 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		defer resp.Body.Close()
 		e, _ := ioutil.ReadAll(resp.Body)
 		return result, errors.New(string(e))
 	}
 
-	defer resp.Body.Close()
-	err = json.NewDecoder(resp.Body).Decode(&result)
+	result.source = bufio.NewScanner(resp.Body)
 	return result, err
 }

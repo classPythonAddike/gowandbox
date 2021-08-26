@@ -25,4 +25,6 @@ func TestGetLanguagesTimeoutError(t *testing.T) {
 	if !strings.Contains(err.Error(), "context deadline exceeded") {
 		t.Fatal(err.Error())
 	}
+
+	t.Log("Request timed out, as expected")
 }
