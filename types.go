@@ -1,6 +1,8 @@
 package gowandbox
 
-import "bufio"
+import (
+	"bufio"
+)
 
 var defaultUrl string = "https://wandbox.org/api/"
 var wandBoxUrl string = defaultUrl
@@ -94,4 +96,34 @@ type GWBLanguage struct {
 type GWBUser struct {
 	Login    bool   `json:"login"`
 	Username string `json:"username"`
+}
+
+type GWBPermLink struct {
+	Parameter struct {
+		Compiler string `json:"compiler"`
+
+		Code  string    `json:"code"`
+		Codes []Program `json:"codes"`
+
+		Options string `json:"options"`
+
+		Stdin             string `json:"stdin"`
+		CompilerOptionRaw string `json:"compiler-option-raw"`
+		RuntimeOptionRaw  string `json:"runtime-option-raw"`
+
+		CreatedAt int64 `json:"created_at"`
+	} `json:"parameter"`
+
+	Result struct {
+		Status string `json:"status"`
+		Signal string `json:"signal"`
+
+		CompilerOutput  string `json:"compiler_output"`
+		CompilerError   string `json:"compiler_error"`
+		CompilerMessage string `json:"compiler_message"`
+
+		ProgramOutput  string `json:"program_output"`
+		ProgramError   string `json:"program_error"`
+		ProgramMessage string `json:"program_message"`
+	} `json:"result"`
 }
