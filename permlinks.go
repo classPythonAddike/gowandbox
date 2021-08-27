@@ -2,7 +2,6 @@ package gowandbox
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -28,7 +27,7 @@ func GetPermLink(link string, timeout int) (GWBPermLink, error) {
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
 		e, _ := ioutil.ReadAll(resp.Body)
-		return result, errors.New(fmt.Sprintf("%v Error - %v", resp.StatusCode, string(e)))
+		return result, fmt.Errorf("%v Error - %v", resp.StatusCode, string(e))
 	}
 
 	defer resp.Body.Close()
