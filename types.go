@@ -205,3 +205,7 @@ type GWBPermLink struct {
 		ProgramMessage string `json:"program_message"`
 	} `json:"result"`
 }
+
+type GWBTemplate struct {
+	Code string `json:"code"`
+}

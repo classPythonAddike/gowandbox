@@ -1,6 +1,7 @@
 package gowandbox
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
@@ -12,27 +13,29 @@ import (
 	If the language is not found, an error is returned (bad template).
 	Maps to the `/template/:template` endpoint
 */
-func GetTemplate(language string, timeout int) (string, error) {
+func GetTemplate(language string, timeout int) (GWBTemplate, error) {
 
 	client := http.Client{
 		Timeout: time.Duration(timeout) * time.Millisecond,
 	}
+
+	templ := GWBTemplate{}
 
 	resp, err := client.Get(
 		WandBoxUrl + "template/" + language,
 	)
 
 	if err != nil {
-		return "", err
+		return templ, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
 		e, _ := ioutil.ReadAll(resp.Body)
-		return "", errors.New(string(e))
+		return templ, errors.New(string(e))
 	}
 
 	defer resp.Body.Close()
-	res, err := ioutil.ReadAll(resp.Body)
-	return string(res), err
+	err = json.NewDecoder(resp.Body).Decode(&templ)
+	return templ, err
 }

@@ -6,13 +6,13 @@ import (
 )
 
 func TestTemplate(t *testing.T) {
-	_, err := GetTemplate("cpython", 10000)
+	template, err := GetTemplate("cpython", 10000)
 
 	if err != nil {
 		t.Error(err.Error())
 	}
 
-	t.Log("Got template for cpython")
+	t.Logf("Got template for cpython - %v", template.Code)
 }
 
 func TestBadTemplateError(t *testing.T) {
