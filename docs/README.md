@@ -13,54 +13,45 @@
 
 A simple wrapper for the WandBox API, written in Golang!
 
+**Note**: This wrapper supports most of the WandBox API's endpoints, except for the `POST /permlink`. This was because, I couldn't figure out how to work with the endpoint - I kept winding up with `500 - Internal Server Errors`. I'm not sure whether it was a bug in the test data that I was using, or if its a bug in the API itself. Either way, that endpoint has not been implemented in this wrapper, and I apologise for any inconveniences. Feel free to make a PR, or open an issue if you're able to figure it out!
+
 ## Installation
 
 `$ go get github.com/classPythonAddike/gowandbox`
 
 
-## Usage
+## Quick Start
 
 ```go
+
 package main
 
 import (
-    "fmt"
-    gwb "github.com/classPythonAddike/gowandbox"
+	"log"
+
+	gwb "github.com/classPythonAddike/gowandbox"
 )
 
 func main() {
 
-	prog := NewGWBProgram()
+	prog := gwb.NewGWBProgram()
 
-	prog.Code = "import gwbutil\n\ngwbutil.say()\ngwbutil.say()" // Code for the main program
-
-	// Other files to create
-	prog.Codes = []Program{
-		{
-			"gwbutil.py",
-			"def say():\nprint(input())",
-		},
-	}
-
-	prog.Options = "warning" // Show warnings
-	prog.Compiler = "cpython-3.8.0" // Use cpython, 3.8 to run your code
-	prog.Stdin = "123\n456" // Specify input for the program
+	prog.Code = "print('Hello, World!')" // Code for the main program
+	prog.Compiler = "cpython-3.8.0"      // Use cpython, 3.8 to run your code
 
 	result, err := prog.Execute(10000) // 10000 milliseconds is the timeout
 
-    if err != nil {
-        fmt.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    fmt.Sprintf("Output: %v\n", result.ProgramOutput)
-	/*
-		Use result.CompilerOutput for output during compile time
-		Use result.CompilerError for errors during compile time
-		Use result.CompilerMessage for both put together
-
-		Use result.ProgramOutput for output during runtime
-		Use result.ProgramError for errors during runtime
-		Use result.ProgramMessage for both put together
-	*/
+	log.Printf("Output: %v", result.ProgramOutput)
 }
+
+```
+
+```
+$ go run main.go
+Output: Hello, World!
+
 ```
