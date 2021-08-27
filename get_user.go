@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+/*
+	Returns a user, given the session key (provided by WandBox).
+	If the session key is invalid, a blank string is returned for the username.
+	Maps to the `/user.json` endpoint.
+*/
 func GetUser(sessionKey string, timeout int) (GWBUser, error) {
 	var result GWBUser
 
@@ -16,7 +21,7 @@ func GetUser(sessionKey string, timeout int) (GWBUser, error) {
 	}
 
 	resp, err := client.Get(
-		wandBoxUrl + "/user.json?session=" + sessionKey,
+		WandBoxUrl + "/user.json?session=" + sessionKey,
 	)
 
 	if err != nil {

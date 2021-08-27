@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+/*
+	Returns information about a program that was run, given the permlink.
+	Maps to the `/permlink/link` endpoint.
+	If the permlink is not found, and 500 error is returned.
+*/
 func GetPermLink(link string, timeout int) (GWBPermLink, error) {
 
 	var result GWBPermLink
@@ -17,7 +22,7 @@ func GetPermLink(link string, timeout int) (GWBPermLink, error) {
 	}
 
 	resp, err := client.Get(
-		wandBoxUrl + "permlink/" + link,
+		WandBoxUrl + "permlink/" + link,
 	)
 
 	if err != nil {

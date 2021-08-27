@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// Returns new GWBProgram struct, after filling it out with defaults
 func NewGWBProgram() GWBProgram {
 	return GWBProgram{
 		Compiler:          "",
@@ -22,6 +23,14 @@ func NewGWBProgram() GWBProgram {
 	}
 }
 
+/*
+Method to execute a GWBProgram
+
+If no errors ocurred, the result is returned in the form of a GWBResult struct.
+If the response code is not 200, an error is returned.
+
+Maps to the `/compile.json` endpoint
+*/
 func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 
 	data, err := json.Marshal(g)
@@ -36,7 +45,7 @@ func (g *GWBProgram) Execute(timeout int) (GWBResult, error) {
 	}
 
 	resp, err := client.Post(
-		wandBoxUrl+"compile.json",
+		WandBoxUrl+"compile.json",
 		"application/json",
 		bytes.NewBuffer(data),
 	)

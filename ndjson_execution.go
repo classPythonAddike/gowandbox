@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// Returns new GWBProgram struct, after filling it out with defaults.
 func NewGWBNDProgram() GWBNDProgram {
 	return GWBNDProgram{
 		Compiler:          "",
@@ -23,6 +24,11 @@ func NewGWBNDProgram() GWBNDProgram {
 	}
 }
 
+/*
+	Method to read ndjson.
+	Returns a GWNDBMessage struct, which provides the type of the message, and data.
+	On reaching the end, an `io.EOF` error is returned.
+*/
 func (r *GWBNDReader) Next() (GWBNDMessage, error) {
 	if !r.source.Scan() {
 		return GWBNDMessage{}, io.EOF
@@ -40,6 +46,14 @@ func (r *GWBNDReader) Next() (GWBNDMessage, error) {
 	return result, err
 }
 
+/*
+Method to execute a GWBProgram
+
+If no errors ocurred, the result is returned in the form of a GWBNDReader struct.
+If the response code is not 200, an error is returned.
+
+Maps to the `/compile.ndjson` endpoint
+*/
 func (g *GWBNDProgram) Execute(timeout int) (GWBNDReader, error) {
 
 	data, err := json.Marshal(g)
@@ -54,7 +68,7 @@ func (g *GWBNDProgram) Execute(timeout int) (GWBNDReader, error) {
 	}
 
 	resp, err := client.Post(
-		wandBoxUrl+"compile.ndjson",
+		WandBoxUrl+"compile.ndjson",
 		"application/json",
 		bytes.NewBuffer(data),
 	)

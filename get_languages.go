@@ -8,6 +8,9 @@ import (
 	"time"
 )
 
+/*
+Returns a list of languages, maps to the `/list.json` endpoint
+*/
 func GetLanguages(timeout int) ([]GWBLanguage, error) {
 	var result []GWBLanguage
 
@@ -16,7 +19,7 @@ func GetLanguages(timeout int) ([]GWBLanguage, error) {
 	}
 
 	resp, err := client.Get(
-		wandBoxUrl + "list.json",
+		WandBoxUrl + "list.json",
 	)
 
 	if err != nil {

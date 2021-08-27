@@ -31,16 +31,15 @@ func TestGetPermLinkTimeoutError(t *testing.T) {
 }
 
 func TestGetPermLinkBadLinkError(t *testing.T) {
-	_, err := GetPermLink("", 10000)
+	_, err := GetPermLink("abc", 10000)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")
 	}
 
-	if !strings.Contains(err.Error(), "405 Error") {
+	if !strings.Contains(err.Error(), "500 Error") {
 		t.Fatal(err.Error())
 	}
 
-	t.Log("Got 405 error, as expected")
-
+	t.Log("Got 500 error, as expected")
 }

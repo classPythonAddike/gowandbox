@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+/*
+	Returns the template for a given language.
+	If the language is not found, an error is returned (bad template).
+	Maps to the `/template/:template` endpoint
+*/
 func GetTemplate(language string, timeout int) (string, error) {
 
 	client := http.Client{
@@ -14,7 +19,7 @@ func GetTemplate(language string, timeout int) (string, error) {
 	}
 
 	resp, err := client.Get(
-		wandBoxUrl + "template/" + language,
+		WandBoxUrl + "template/" + language,
 	)
 
 	if err != nil {
