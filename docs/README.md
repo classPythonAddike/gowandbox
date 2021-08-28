@@ -17,7 +17,9 @@ A simple wrapper for the WandBox API, written in Golang!
 
 ## Installation
 
-`$ go get github.com/classPythonAddike/gowandbox`
+```
+$ go get github.com/classPythonAddike/gowandbox
+```
 
 
 ## Quick Start
