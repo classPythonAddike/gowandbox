@@ -83,7 +83,7 @@ print("Hello, world!")
 
 You can view the state of a WandBox user, given their SessionKey (Provided by WandBox) -
 ```go
-user, err := gwb.GetUser("session-key", 10000)
+user, err := gwb.GetUser("<user-session-key>", 10000)
 if err != nil {
 	log.Fatal(err)
 }
