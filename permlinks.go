@@ -33,6 +33,10 @@ func GetPermLink(link string, ctx context.Context) (GWBPermLink, error) {
 
 	resp, err := client.Do(req)
 
+	if err != nil {
+		return result, err
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()
 		e, _ := ioutil.ReadAll(resp.Body)

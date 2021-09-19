@@ -37,7 +37,8 @@ func (g *GWBProgram) Execute(ctx context.Context) (GWBResult, error) {
 		ctx,
 		http.MethodPost,
 		WandBoxUrl+"compile.json",
-		bytes.NewBuffer(data))
+		bytes.NewBuffer(data),
+	)
 
 	if err != nil {
 		return result, err
@@ -46,6 +47,10 @@ func (g *GWBProgram) Execute(ctx context.Context) (GWBResult, error) {
 	req.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
+
+	if err != nil {
+		return result, err
+	}
 
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()

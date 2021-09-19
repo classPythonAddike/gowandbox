@@ -5,6 +5,7 @@ import (
 	"io"
 	"strings"
 	"testing"
+	"time"
 )
 
 func assertData(message, want, got string, t *testing.T) {
@@ -53,32 +54,35 @@ func TestNDExecute(t *testing.T) {
 
 }
 
-// func TestNDExecuteTimeout(t *testing.T) {
-// 	prog := NewGWBNDProgram()
-//
-// 	prog.Code = "import gwbutil\n\ngwbutil.say()"
-// 	prog.Codes = []Program{
-// 		{
-// 			"gwbutil.py",
-// 			"def say(): print(input())",
-// 		},
-// 	}
-// 	prog.Options = "warning"
-// 	prog.Compiler = "cpython-3.8.0"
-// 	prog.Stdin = "123"
-//
-// 	_, err := prog.Execute(1)
-//
-// 	if err == nil {
-// 		t.Error("Got no error, but was expecting a timeout!")
-// 	}
-//
-// 	if !strings.Contains(err.Error(), "context deadline exceeded") {
-// 		t.Error(err.Error())
-// 	}
-//
-// 	t.Log("Request timed out, as expected")
-// }
+func TestNDExecuteTimeout(t *testing.T) {
+	prog := NewGWBNDProgram()
+
+	prog.Code = "import gwbutil\n\ngwbutil.say()"
+	prog.Codes = []Program{
+		{
+			"gwbutil.py",
+			"def say(): print(input())",
+		},
+	}
+	prog.Options = "warning"
+	prog.Compiler = "cpython-3.8.0"
+	prog.Stdin = "123"
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	defer cancel()
+
+	_, err := prog.Execute(ctx)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting a timeout!")
+	}
+
+	if !strings.Contains(err.Error(), "context deadline exceeded") {
+		t.Error(err.Error())
+	}
+
+	t.Log("Request timed out, as expected")
+}
 
 func TestNDExecuteBadCompilerError(t *testing.T) {
 	prog := NewGWBNDProgram()

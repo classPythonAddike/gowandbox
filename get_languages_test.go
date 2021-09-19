@@ -2,7 +2,9 @@ package gowandbox
 
 import (
 	"context"
+	"strings"
 	"testing"
+	"time"
 )
 
 func TestGetLanguages(t *testing.T) {
@@ -15,16 +17,21 @@ func TestGetLanguages(t *testing.T) {
 	}
 }
 
-// func TestGetLanguagesTimeoutError(t *testing.T) {
-// 	_, err := GetLanguages(1)
-//
-// 	if err == nil {
-// 		t.Error("Got no error, but was expecting one!")
-// 	}
-//
-// 	if !strings.Contains(err.Error(), "context deadline exceeded") {
-// 		t.Fatal(err.Error())
-// 	}
-//
-// 	t.Log("Request timed out, as expected")
-// }
+func TestGetLanguagesTimeoutError(t *testing.T) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+
+	defer cancel()
+
+	_, err := GetLanguages(ctx)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
+	}
+
+	if !strings.Contains(err.Error(), "context deadline exceeded") {
+		t.Fatal(err.Error())
+	}
+
+	t.Log("Request timed out, as expected")
+}

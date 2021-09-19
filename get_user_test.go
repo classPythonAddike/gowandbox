@@ -3,6 +3,8 @@ package gowandbox
 import (
 	"context"
 	"testing"
+	"time"
+  "strings"
 )
 
 func TestUserNotFoundError(t *testing.T) {
@@ -18,16 +20,21 @@ func TestUserNotFoundError(t *testing.T) {
 	t.Log("User was not found, as expected")
 }
 
-// func TestUserTimeoutError(t *testing.T) {
-// 	_, err := GetUser("", 1)
-//
-// 	if err == nil {
-// 		t.Error("Got no error, but was expecting one!")
-// 	}
-//
-// 	if !strings.Contains(err.Error(), "context deadline exceeded") {
-// 		t.Error(err.Error())
-// 	}
-//
-// 	t.Log("Request timed out as expected")
-// }
+func TestUserTimeoutError(t *testing.T) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+
+	defer cancel()
+
+	_, err := GetUser("", ctx)
+
+	if err == nil {
+		t.Error("Got no error, but was expecting one!")
+	}
+
+	if !strings.Contains(err.Error(), "context deadline exceeded") {
+		t.Error(err.Error())
+	}
+
+	t.Log("Request timed out as expected")
+}
