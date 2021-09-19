@@ -35,7 +35,10 @@ prog.SaveCode = true // Save it to a permlink
 
 Execute it with `.Execute()`
 ```go
-result, err := prog.Execute(10000) // We want the request to timeout after 10,000 milliseconds
+result, err := prog.Execute(
+		context.WithTimeout(context.Background()),
+		10000 * time.Millisecond
+	) // 10000 milliseconds is the timeout
 
 if err != nil {
 	log.Fatal(err)
@@ -105,7 +108,10 @@ prog.Stdin = "123\n456"
 
 Then, execute your code -
 ```go
-result, err := prog.Execute(10000) // Result is of the type `GWBNDReader`
+result, err := prog.Execute(
+		context.WithTimeout(context.Background()),
+		10000 * time.Millisecond
+	) // 10000 milliseconds is the timeout
 
 if err != nil {
 	log.Fatal(err)

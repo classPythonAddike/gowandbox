@@ -30,6 +30,8 @@ package main
 
 import (
 	"log"
+	"context"
+	"time"
 
 	gwb "github.com/classPythonAddike/gowandbox"
 )
@@ -41,7 +43,10 @@ func main() {
 	prog.Code = "print('Hello, World!')" // Code for the main program
 	prog.Compiler = "cpython-3.8.0"      // Use cpython, 3.8 to run your code
 
-	result, err := prog.Execute(10000) // 10000 milliseconds is the timeout
+	result, err := prog.Execute(
+		context.WithTimeout(context.Background()),
+		10000 * time.Millisecond
+	) // 10000 milliseconds is the timeout
 
 	if err != nil {
 		log.Fatal(err)
