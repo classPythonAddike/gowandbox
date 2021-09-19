@@ -11,17 +11,9 @@ import (
 	"net/http"
 )
 
-// Returns new GWBProgram struct, after filling it out with defaults.
-func NewGWBNDProgram() GWBNDProgram {
-	return GWBNDProgram{
-		Compiler:          "",
-		Code:              "",
-		Codes:             []Program{},
-		Options:           "",
-		CompilerOptionRaw: "",
-		RuntimeOptionRaw:  "",
-		Stdin:             "",
-	}
+// Returns new GWBProgram struct
+func NewGWBNDProgram() *GWBNDProgram {
+	return &GWBNDProgram{}
 }
 
 /*

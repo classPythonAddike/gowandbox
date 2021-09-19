@@ -16,7 +16,6 @@ func assertData(message, want, got string, t *testing.T) {
 
 func TestNDExecute(t *testing.T) {
 	prog := NewGWBNDProgram()
-
 	prog.Code = "import gwbutil\n\ngwbutil.say()"
 	prog.Codes = []Program{
 		{
