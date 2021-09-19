@@ -1,13 +1,15 @@
 package gowandbox
 
 import (
+	"context"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestGetPermLink(t *testing.T) {
 
-	result, err := GetPermLink("ia8loUVGVV8widMw", 10000)
+	result, err := GetPermLink("ia8loUVGVV8widMw", context.Background())
 
 	if err != nil {
 		t.Error(err.Error())
@@ -17,7 +19,11 @@ func TestGetPermLink(t *testing.T) {
 }
 
 func TestGetPermLinkTimeoutError(t *testing.T) {
-	_, err := GetPermLink("ia8loUVGVV8widMw", 1)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	defer cancel()
+
+	_, err := GetPermLink("ia8loUVGVV8widMw", ctx)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")
@@ -31,7 +37,7 @@ func TestGetPermLinkTimeoutError(t *testing.T) {
 }
 
 func TestGetPermLinkBadLinkError(t *testing.T) {
-	_, err := GetPermLink("abc", 10000)
+	_, err := GetPermLink("abc", context.Background())
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")

@@ -1,12 +1,14 @@
 package gowandbox
 
 import (
-	"strings"
+	"context"
 	"testing"
+	"time"
+  "strings"
 )
 
 func TestUserNotFoundError(t *testing.T) {
-	user, err := GetUser("", 10000) // Dummy string
+	user, err := GetUser("", context.Background()) // Dummy string
 	if err != nil {
 		t.Error(err.Error())
 	}
@@ -19,7 +21,12 @@ func TestUserNotFoundError(t *testing.T) {
 }
 
 func TestUserTimeoutError(t *testing.T) {
-	_, err := GetUser("", 1)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+
+	defer cancel()
+
+	_, err := GetUser("", ctx)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")

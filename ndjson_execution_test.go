@@ -1,9 +1,11 @@
 package gowandbox
 
 import (
+	"context"
 	"io"
 	"strings"
 	"testing"
+	"time"
 )
 
 func assertData(message, want, got string, t *testing.T) {
@@ -14,7 +16,6 @@ func assertData(message, want, got string, t *testing.T) {
 
 func TestNDExecute(t *testing.T) {
 	prog := NewGWBNDProgram()
-
 	prog.Code = "import gwbutil\n\ngwbutil.say()"
 	prog.Codes = []Program{
 		{
@@ -26,7 +27,7 @@ func TestNDExecute(t *testing.T) {
 	prog.Compiler = "cpython-3.8.0"
 	prog.Stdin = "123"
 
-	result, err := prog.Execute(10000)
+	result, err := prog.Execute(context.Background())
 
 	if err != nil {
 		t.Error(err.Error())
@@ -66,7 +67,10 @@ func TestNDExecuteTimeout(t *testing.T) {
 	prog.Compiler = "cpython-3.8.0"
 	prog.Stdin = "123"
 
-	_, err := prog.Execute(1)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	defer cancel()
+
+	_, err := prog.Execute(ctx)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting a timeout!")
@@ -93,7 +97,7 @@ func TestNDExecuteBadCompilerError(t *testing.T) {
 	prog.Compiler = "abc"
 	prog.Stdin = "123"
 
-	_, err := prog.Execute(10000)
+	_, err := prog.Execute(context.Background())
 
 	if err == nil {
 		t.Error("Got no error, but was expecting a server error!")

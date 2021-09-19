@@ -1,26 +1,33 @@
 package gowandbox
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 /*
 Returns a list of languages, maps to the `/list.json` endpoint
 */
-func GetLanguages(timeout int) ([]GWBLanguage, error) {
+func GetLanguages(ctx context.Context) ([]GWBLanguage, error) {
 	var result []GWBLanguage
 
-	client := http.Client{
-		Timeout: time.Duration(timeout) * time.Millisecond,
+	client := http.DefaultClient
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		WandBoxUrl+"list.json",
+		nil,
+	)
+
+	if err != nil {
+		return result, err
 	}
 
-	resp, err := client.Get(
-		WandBoxUrl + "list.json",
-	)
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return result, err

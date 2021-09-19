@@ -2,9 +2,10 @@ package gowandbox
 
 import (
 	"bufio"
+	"net/http"
 )
 
-var defaultUrl string = "https://wandbox.org/api/"
+const defaultUrl string = "https://wandbox.org/api/"
 
 // Url to WandBox API
 var WandBoxUrl string = defaultUrl
@@ -48,6 +49,8 @@ type Program struct {
 	program will be saved to WandBox at that url. Default value is false.
 */
 type GWBProgram struct {
+	HttpClient *http.Client
+
 	Compiler string `json:"compiler"`
 
 	Code  string    `json:"code"`

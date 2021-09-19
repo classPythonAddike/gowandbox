@@ -1,12 +1,14 @@
 package gowandbox
 
 import (
+	"context"
 	"strings"
 	"testing"
+	"time"
 )
 
 func TestTemplate(t *testing.T) {
-	template, err := GetTemplate("cpython", 10000)
+	template, err := GetTemplate("cpython", context.Background())
 
 	if err != nil {
 		t.Error(err.Error())
@@ -16,7 +18,7 @@ func TestTemplate(t *testing.T) {
 }
 
 func TestBadTemplateError(t *testing.T) {
-	_, err := GetTemplate("abc", 10000)
+	_, err := GetTemplate("abc", context.Background())
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")
@@ -30,7 +32,12 @@ func TestBadTemplateError(t *testing.T) {
 }
 
 func TestTemplateTimeoutError(t *testing.T) {
-	_, err := GetTemplate("", 1)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+
+	defer cancel()
+
+	_, err := GetTemplate("", ctx)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")

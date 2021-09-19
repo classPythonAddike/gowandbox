@@ -1,9 +1,11 @@
 package gowandbox
 
 import (
+	"context"
 	"log"
 	"strings"
 	"testing"
+	"time"
 )
 
 func assert(expected, got string, t *testing.T) {
@@ -27,7 +29,7 @@ func TestExecution(t *testing.T) {
 	prog.Compiler = "cpython-3.8.0"
 	prog.Stdin = "123\n456"
 
-	result, err := prog.Execute(10000)
+	result, err := prog.Execute(context.Background())
 
 	if err != nil {
 		t.Error(err.Error())
@@ -58,12 +60,14 @@ func TestExecutionTimeout(t *testing.T) {
 	prog.Compiler = "cpython-3.8.0"
 	prog.Stdin = "123"
 
-	_, err := prog.Execute(1)
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Millisecond)
+	defer cancel()
+
+	_, err := prog.Execute(ctx)
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")
 	}
-
 	if !strings.Contains(err.Error(), "context deadline exceeded") {
 		t.Error(err.Error())
 	}
@@ -86,7 +90,7 @@ func TestExecutionBadCompiler(t *testing.T) {
 	prog.Compiler = "abc"
 	prog.Stdin = "123"
 
-	_, err := prog.Execute(10000)
+	_, err := prog.Execute(context.Background())
 
 	if err == nil {
 		t.Error("Got no error, but was expecting one!")
