@@ -43,10 +43,10 @@ func main() {
 	prog.Code = "print('Hello, World!')" // Code for the main program
 	prog.Compiler = "cpython-3.8.0"      // Use cpython, 3.8 to run your code
 
-	result, err := prog.Execute(
-		context.WithTimeout(context.Background()),
-		10000 * time.Millisecond
-	) // 10000 milliseconds is the timeout
+	ctx, cancel = context.WithTimeout(context.Background(), 10 * time.Second)
+	defer cancel()
+
+	result, err := prog.Execute(ctx) // 10 seconds is the timeout
 
 	if err != nil {
 		log.Fatal(err)

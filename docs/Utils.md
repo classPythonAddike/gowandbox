@@ -5,10 +5,7 @@ GoWandBox also offers a couple of utilities, most of which wrap around the WandB
 ## List Supported Languages
 
 ```go
-languages, err := gwb.GetLanguages(
-		context.WithTimeout(context.Background()),
-		10000 * time.Millisecond
-	) // 10000 milliseconds is the timeout
+languages, err := gwb.GetLanguages(context.Background())
 
 if err != nil {
 	log.Fatal(err)
@@ -61,12 +58,8 @@ Template Names - [gcc-c]
 You can get the template for a language, with the `GetTemplate()` function.
 
 ```go
-template, err := gwb.GetTemplate(
-	"cpython",
-	context.WithTimeout(context.Background()),
-	10000 * time.Millisecond
-)
-// Get the template for `cpython`, with a 10000 millisecond timeout
+template, err := gwb.GetTemplate("cpython", context.Background())
+// Get the template for `cpython`
 
 if err != nil {
 	log.Fatal(err)
@@ -90,11 +83,7 @@ print("Hello, world!")
 
 You can view the state of a WandBox user, given their SessionKey (Provided by WandBox) -
 ```go
-user, err := gwb.GetUser(
-	"<user-session-key>",
-	context.WithTimeout(context.Background()),
-	10000 * time.Millisecond
-) // 10000 milliseconds is the timeout
+user, err := gwb.GetUser("<user-session-key>", context.Background())
 
 if err != nil {
 	log.Fatal(err)
@@ -115,11 +104,7 @@ Logged in Currently: true
 If you have the the PermLink of a program that was executed, and saved, you can retrieve information about it, such as the code, input, compiler used, time it was executed at, output, errors, etc.
 
 ```go
-result, err := GetPermLink(
-	"permlink",
-	context.WithTimeout(context.Background()),
-	10000 * time.Millisecond
-) // 10000 milliseconds is the timeout
+result, err := GetPermLink("permlink", context.Background())
 
 if err != nil {
 	log.Fatal(err)

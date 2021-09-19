@@ -35,10 +35,10 @@ prog.SaveCode = true // Save it to a permlink
 
 Execute it with `.Execute()`
 ```go
-result, err := prog.Execute(
-		context.WithTimeout(context.Background()),
-		10000 * time.Millisecond
-	) // 10000 milliseconds is the timeout
+ctx, cancel = context.WithTimeout(context.Background(), 10 * time.Second)
+defer cancel()
+
+result, err := prog.Execute(ctx) // 10 seconds is the timeout
 
 if err != nil {
 	log.Fatal(err)
@@ -108,10 +108,10 @@ prog.Stdin = "123\n456"
 
 Then, execute your code -
 ```go
-result, err := prog.Execute(
-		context.WithTimeout(context.Background()),
-		10000 * time.Millisecond
-	) // 10000 milliseconds is the timeout
+ctx, cancel = context.WithTimeout(context.Background(), 10 * time.Second)
+defer cancel()
+
+result, err := prog.Execute(ctx) // 10 seconds is the timeout
 
 if err != nil {
 	log.Fatal(err)
