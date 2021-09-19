@@ -1,11 +1,11 @@
 package gowandbox
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 /*
@@ -13,21 +13,25 @@ import (
 	Maps to the `/permlink/link` endpoint.
 	If the permlink is not found, and 500 error is returned.
 */
-func GetPermLink(link string, timeout int) (GWBPermLink, error) {
+func GetPermLink(link string, ctx context.Context) (GWBPermLink, error) {
 
 	var result GWBPermLink
 
-	client := http.Client{
-		Timeout: time.Duration(timeout) * time.Millisecond,
-	}
+	client := http.DefaultClient
 
-	resp, err := client.Get(
-		WandBoxUrl + "permlink/" + link,
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+
+		WandBoxUrl+"permlink/"+link,
+		nil,
 	)
 
 	if err != nil {
 		return result, err
 	}
+
+	resp, err := client.Do(req)
 
 	if resp.StatusCode != http.StatusOK {
 		defer resp.Body.Close()

@@ -3,12 +3,12 @@ package gowandbox
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 // Returns new GWBProgram struct, after filling it out with defaults.
@@ -54,7 +54,7 @@ If the response code is not 200, an error is returned.
 
 Maps to the `/compile.ndjson` endpoint
 */
-func (g *GWBNDProgram) Execute(timeout int) (GWBNDReader, error) {
+func (g *GWBNDProgram) Execute(ctx context.Context) (GWBNDReader, error) {
 
 	data, err := json.Marshal(g)
 	var result GWBNDReader
@@ -63,15 +63,24 @@ func (g *GWBNDProgram) Execute(timeout int) (GWBNDReader, error) {
 		return result, err
 	}
 
-	client := http.Client{
-		Timeout: time.Duration(timeout) * time.Millisecond,
-	}
+	client := http.DefaultClient
 
-	resp, err := client.Post(
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodPost,
+
 		WandBoxUrl+"compile.ndjson",
-		"application/json",
+
 		bytes.NewBuffer(data),
 	)
+
+	if err != nil {
+		return result, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return result, err

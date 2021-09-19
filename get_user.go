@@ -1,11 +1,11 @@
 package gowandbox
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 /*
@@ -13,16 +13,23 @@ import (
 	If the session key is invalid, a blank string is returned for the username.
 	Maps to the `/user.json` endpoint.
 */
-func GetUser(sessionKey string, timeout int) (GWBUser, error) {
+func GetUser(sessionKey string, ctx context.Context) (GWBUser, error) {
 	var result GWBUser
 
-	client := http.Client{
-		Timeout: time.Duration(timeout) * time.Millisecond,
+	client := http.DefaultClient
+
+	req, err := http.NewRequestWithContext(
+		ctx,
+		http.MethodGet,
+		WandBoxUrl+"/user.json?session="+sessionKey,
+		nil,
+	)
+
+	if err != nil {
+		return result, err
 	}
 
-	resp, err := client.Get(
-		WandBoxUrl + "/user.json?session=" + sessionKey,
-	)
+	resp, err := client.Do(req)
 
 	if err != nil {
 		return result, err
